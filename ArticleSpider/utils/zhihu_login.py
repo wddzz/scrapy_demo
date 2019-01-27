@@ -37,15 +37,37 @@ def is_login():
     else:
         return True
 
+
+def get_captcha():
+    import time
+    t = str(int(time.time()*1000))
+    captcha_url = "https://www.zhihu.com/captcha.gif?r={0}&type=login".format(t)
+    t = session.get(captcha_url, headers=header)
+    with open('captcha.jpg', 'wb') as f:
+        f.write(t.content)
+        f.close()
+    from PIL import Image
+    try:
+        im = Image.open('captcha.jpg')
+        im.show()
+        im.close()
+    except:
+        pass
+
+    captcha = input('请输入验证码：')
+    return captcha
+
+
 def zhihu_login(account,password):
     # 知乎登录
-    if re.match("^1\d{10}", account)
+    if re.match("^1\d{10}", account):
         print("手机号登录")
         post_url = 'https:www.zhihu.com/login/phone_num'
         post_data = {
             '_crsf': get_xsrf(),
             'phone':account,
-            'password':password
+            'password':password,
+            'captcha':get_captcha()
         }
     else:
         if '@' in account:

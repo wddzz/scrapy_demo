@@ -41,4 +41,37 @@ class ArticlespiderItem(scrapy.Item):
         output_processor=MapCompose(return_value)
     )
     front_image_path = scrapy.Field()
-    pass
+
+    def get_insert_sql(self):
+        insert_sql = """
+                    insert into jobbole_article(title,url,create_date)
+                    VALUES (%s,%s,%s)
+                """
+        params = (self['title'], self['url'], self['create_date'])
+        return insert_sql, params
+
+
+class ZhihuQuestionItem(scrapy.Item):
+    # 知乎的问题item
+    zhihu_id = scrapy.Field()
+    topics = scrapy.Field()
+
+    def get_insert_sql(self):
+        # 插入知乎question表的SQL语句
+        insert_sql = """insert into zhihu_answer(zhihu_id, url, question_id, content,update_time)
+                        VALUES (%s, %s, %s)
+                        ON DUPLICATE KEY UPDATE content=VALUES(content), update_time=VALUES(update_time)
+        """
+        params = "......"
+        return insert_sql, params
+
+
+class ZhihuAnswerItem(scrapy.Item):
+    # 知乎的问题回答item
+    zhihu_id = scrapy.Field()
+    url = scrapy.Field()
+
+    def get_insert_sql(self):
+        insert_sql = """......"""
+        params = """......"""
+        return insert_sql, params

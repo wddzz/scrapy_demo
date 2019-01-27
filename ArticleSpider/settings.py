@@ -108,3 +108,6 @@ MYSQL_USER = 'root'
 MYSQL_PASSWORD = 'root'
 # 豆瓣源安装包
 # pip install -i https://pypi.douban.com/simple pillow
+
+# scrapy shell 使用user_agent
+# scrapy shell -s USER_AGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64)' https://www.baidu.com
